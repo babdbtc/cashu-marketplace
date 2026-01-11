@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="cart">
+    <h1>Shopping Cart</h1>
+
+    {% if items.is_empty() %}
+    <p>Your cart is empty.</p>
+    <a href="/listings" class="btn secondary">Browse Listings</a>
+    {% else %}
+    <div class="cart-items">
+        {% for item in items %}
+        <div class="cart-item">
+            <div class="item-info">
+                <h3>{{ item.listing.title }}</h3>
+                <p class="seller">Seller: {{ item.listing.seller_npub[..12] }}...</p>
+                <p class="category">{{ item.listing.category }}</p>
+            </div>
+            <div class="item-price">{{ item.listing.price }} sats</div>
+            <form method="post" action="/cart/remove/{{ item.cart_item.id }}">
+                <button type="submit" class="btn-small">Remove</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="cart-summary">
+        <div class="line"><span>Subtotal:</span><span>{{ subtotal }} sats</span></div>
+        <div class="line"><span>Fee (1%):</span><span>{{ fee }} sats</span></div>
+        <div class="line total"><span>Total:</span><span>{{ total }} sats</span></div>
+    </div>
+
+    <a href="/checkout" class="btn primary">Proceed to Checkout</a>
+    {% endif %}
+</section>
+{% endblock %}

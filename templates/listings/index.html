@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="listings">
+    <h1>Listings</h1>
+
+    <form class="search-form" method="get" action="/listings">
+        <input type="text" name="q" placeholder="Search..." value="{{ query.q.as_deref().unwrap_or_default() }}">
+        <select name="category">
+            <option value="">All Categories</option>
+            <option value="digital" {% if query.category.as_deref() == Some("digital") %}selected{% endif %}>Digital</option>
+            <option value="physical" {% if query.category.as_deref() == Some("physical") %}selected{% endif %}>Physical</option>
+            <option value="services" {% if query.category.as_deref() == Some("services") %}selected{% endif %}>Services</option>
+        </select>
+        <button type="submit">Search</button>
+    </form>
+
+    <div class="listing-grid">
+        {% if listings.is_empty() %}
+        <p>No listings found.</p>
+        {% else %}
+        {% for listing in listings %}
+        <div class="listing-card">
+            <a href="/listings/{{ listing.id }}">
+                <h3>{{ listing.title }}</h3>
+                <p class="price">{{ listing.price }} sats</p>
+                <p class="category">{{ listing.category }}</p>
+            </a>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+    {% if total_pages > 1 %}
+    <nav class="pagination">
+        {% if current_page > 1 %}
+        <a href="/listings?page={{ current_page - 1 }}">&laquo; Previous</a>
+        {% endif %}
+        <span>Page {{ current_page }} of {{ total_pages }}</span>
+        {% if current_page < total_pages %}
+        <a href="/listings?page={{ current_page + 1 }}">Next &raquo;</a>
+        {% endif %}
+    </nav>
+    {% endif %}
+</section>
+{% endblock %}

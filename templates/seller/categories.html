@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="manage-categories">
+    <h1>Manage Categories</h1>
+
+    <div class="balance-info">
+        <strong>Your Balance:</strong> {{ wallet_balance }} sats
+    </div>
+
+    <h2>Your Categories</h2>
+    <div class="owned-categories">
+        {% if owned_categories.is_empty() %}
+        <p>You don't have any categories yet.</p>
+        {% else %}
+        <ul class="category-list">
+            {% for cat in owned_categories %}
+            <li class="category-item owned">
+                <span class="category-name">{{ cat }}</span>
+                <span class="category-status">Active</span>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
+    {% if !available_categories.is_empty() %}
+    <h2>Add More Categories</h2>
+    <div class="available-categories">
+        {% for cat in available_categories %}
+        <form method="post" action="/seller/categories" class="category-buy-form">
+            <input type="hidden" name="category" value="{{ cat.id }}">
+            <div class="category-item available">
+                <div class="category-info">
+                    <span class="category-name">{{ cat.name }}</span>
+                    <span class="category-price">{{ cat.bond_amount }} sats</span>
+                </div>
+                <button type="submit" class="btn primary small">Buy Access</button>
+            </div>
+        </form>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="form-actions">
+        <a href="/seller/dashboard" class="btn secondary">Back to Dashboard</a>
+    </div>
+</section>
+{% endblock %}

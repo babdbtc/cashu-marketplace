@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="listing-detail">
+    <h1>{{ listing.title }}</h1>
+
+    <div class="listing-info">
+        <p class="price">{{ listing.price }} sats</p>
+        <p class="category">Category: {{ listing.category }}</p>
+        <p class="seller">Seller: {{ listing.seller_npub[..12] }}...</p>
+        {% if let Some(rating) = seller_rating %}
+        <p class="rating">Rating: {{ rating }}/5 ({{ seller_sales }} sales)</p>
+        {% endif %}
+    </div>
+
+    <div class="description">
+        <h2>Description</h2>
+        <p>{{ listing.description }}</p>
+    </div>
+
+    {% if listing.is_available() %}
+    <div class="actions">
+        {% if is_owner %}
+        <a href="/listings/{{ listing.id }}/edit" class="btn secondary">Edit Listing</a>
+        {% else %}
+        {% if in_cart %}
+        <p>This item is in your cart.</p>
+        <a href="/cart" class="btn secondary">View Cart</a>
+        {% else %}
+        <form method="post" action="/cart/add/{{ listing.id }}">
+            <button type="submit" class="btn primary">Add to Cart</button>
+        </form>
+        {% endif %}
+        {% endif %}
+    </div>
+    {% else %}
+    <p class="unavailable">This listing is currently unavailable.</p>
+    {% endif %}
+</section>
+{% endblock %}

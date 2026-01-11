@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Marketplace{% endblock %}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/" class="logo">Marketplace</a>
+            <ul>
+                <li><a href="/listings">Listings</a></li>
+                <li><a href="/cart">Cart</a></li>
+                <li><a href="/wallet">Wallet</a></li>
+                <li><a href="/orders">Orders</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>Privacy-First Marketplace</p>
+        <p>Powered by Cashu &amp; Nostr</p>
+    </footer>
+</body>
+</html>

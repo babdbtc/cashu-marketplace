@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="become-seller">
+    <h1>Become a Seller</h1>
+
+    <div class="info-box">
+        <p>To sell on this marketplace, you must pay a refundable bond for each category you want to sell in.</p>
+        <p>Bonds protect buyers from fraud and are returned when you close your seller account in good standing.</p>
+    </div>
+
+    <div class="balance-info">
+        <strong>Your Balance:</strong> {{ wallet_balance }} sats
+    </div>
+
+    <form method="post" action="/seller/become" class="seller-form">
+        <h2>Choose Your Starting Category</h2>
+
+        <div class="category-options">
+            <label class="category-option">
+                <input type="radio" name="category" value="digital" required>
+                <div class="option-content">
+                    <span class="option-title">Digital Goods</span>
+                    <span class="option-desc">Software, e-books, digital art, etc.</span>
+                    <span class="option-price">{{ category_bond }} sats</span>
+                </div>
+            </label>
+
+            <label class="category-option">
+                <input type="radio" name="category" value="physical">
+                <div class="option-content">
+                    <span class="option-title">Physical Goods</span>
+                    <span class="option-desc">Hardware, merchandise, collectibles, etc.</span>
+                    <span class="option-price">{{ category_bond }} sats</span>
+                </div>
+            </label>
+
+            <label class="category-option">
+                <input type="radio" name="category" value="services">
+                <div class="option-content">
+                    <span class="option-title">Services</span>
+                    <span class="option-desc">Consulting, freelance work, etc.</span>
+                    <span class="option-price">{{ category_bond }} sats</span>
+                </div>
+            </label>
+
+            <label class="category-option featured">
+                <input type="radio" name="category" value="all">
+                <div class="option-content">
+                    <span class="option-title">All Categories</span>
+                    <span class="option-desc">Access to all categories at a discount</span>
+                    <span class="option-price">{{ all_categories_bond }} sats</span>
+                    <span class="option-badge">Save {{ category_bond * 3 - all_categories_bond }} sats!</span>
+                </div>
+            </label>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn primary">Pay Bond & Become Seller</button>
+            <a href="/" class="btn secondary">Cancel</a>
+        </div>
+    </form>
+
+    <div class="info-note">
+        <h3>Bond Terms</h3>
+        <ul>
+            <li>Bonds are held for the duration of your seller account</li>
+            <li>Bonds may be forfeited in cases of proven fraud</li>
+            <li>You can add more categories later from your seller dashboard</li>
+            <li>Bonds are fully refundable when closing your account with no disputes</li>
+        </ul>
+    </div>
+</section>
+{% endblock %}

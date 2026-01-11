@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="admin-dashboard">
+    <h1>Admin Dashboard</h1>
+
+    <div class="stats-grid">
+        <div class="stat-card {% if open_disputes > 0 %}urgent{% endif %}">
+            <span class="stat-label">Open Disputes</span>
+            <span class="stat-value">{{ open_disputes }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Total Users</span>
+            <span class="stat-value">{{ total_users }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Active Listings</span>
+            <span class="stat-value">{{ total_listings }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Total Orders</span>
+            <span class="stat-value">{{ total_orders }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Escrow Held</span>
+            <span class="stat-value">{{ total_escrow_held }} sats</span>
+        </div>
+    </div>
+
+    <div class="admin-actions">
+        <a href="/admin/disputes" class="btn primary">Manage Disputes</a>
+    </div>
+</section>
+{% endblock %}

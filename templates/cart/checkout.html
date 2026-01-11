@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="checkout">
+    <h1>Checkout</h1>
+
+    <div class="price-lock-warning">
+        <strong>Price locked for:</strong> {{ time_remaining / 60 }} minutes
+    </div>
+
+    <div class="checkout-items">
+        {% for item in items %}
+        <div class="checkout-item">
+            <span class="title">{{ item.listing.title }}</span>
+            <span class="price">{{ item.item.locked_price }} sats</span>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="checkout-summary">
+        <div class="line"><span>Subtotal:</span><span>{{ checkout.total_amount }} sats</span></div>
+        <div class="line"><span>Fee:</span><span>{{ checkout.fee_amount }} sats</span></div>
+        <div class="line total"><span>Total:</span><span>{{ checkout.total_amount + checkout.fee_amount }} sats</span></div>
+    </div>
+
+    <form method="post" action="/checkout">
+        <h2>Payment Method</h2>
+
+        <div class="payment-options">
+            <div class="payment-option">
+                <input type="radio" id="wallet" name="payment_method" value="wallet" checked>
+                <label for="wallet">
+                    Wallet Balance ({{ wallet_balance }} sats available)
+                </label>
+            </div>
+
+            <div class="payment-option">
+                <input type="radio" id="external" name="payment_method" value="external">
+                <label for="external">External Payment (Cashu Token)</label>
+            </div>
+        </div>
+
+        <div class="external-payment" style="display:none;">
+            <div class="form-group">
+                <label for="cashu_token">Cashu Token</label>
+                <textarea id="cashu_token" name="cashu_token" placeholder="cashuA..."></textarea>
+            </div>
+        </div>
+
+        <button type="submit" class="btn primary">Pay {{ checkout.total_amount + checkout.fee_amount }} sats</button>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="seller-dashboard">
+    <h1>Seller Dashboard</h1>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="stat-label">Wallet Balance</span>
+            <span class="stat-value">{{ wallet_balance }} sats</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Pending Orders</span>
+            <span class="stat-value">{{ pending_orders }}</span>
+        </div>
+        {% if let Some(s) = stats %}
+        <div class="stat-card">
+            <span class="stat-label">Total Sales</span>
+            <span class="stat-value">{{ s.completed_orders }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Total Revenue</span>
+            <span class="stat-value">{{ s.total_revenue }} sats</span>
+        </div>
+        {% if let Some(rating) = s.avg_rating %}
+        <div class="stat-card">
+            <span class="stat-label">Rating</span>
+            <span class="stat-value">{{ rating }}/5</span>
+        </div>
+        {% endif %}
+        {% endif %}
+    </div>
+
+    <div class="quick-actions">
+        <a href="/listings/new" class="btn primary">New Listing</a>
+        <a href="/seller/orders" class="btn secondary">View Orders</a>
+    </div>
+
+    <h2>Recent Listings</h2>
+    <div class="listing-list">
+        {% if listings.is_empty() %}
+        <p>No active listings.</p>
+        {% else %}
+        {% for listing in listings %}
+        <div class="listing-row">
+            <span class="listing-title">{{ listing.title }}</span>
+            <span class="listing-price">{{ listing.price }} sats</span>
+            <a href="/listings/{{ listing.id }}">View</a>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

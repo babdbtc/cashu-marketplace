@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="dispute-detail">
+    <h1>{{ title }}</h1>
+
+    <div class="dispute-info">
+        <h2>Details</h2>
+        <p><strong>Order:</strong> {{ order.id }}</p>
+        <p><strong>Buyer:</strong> {{ order.buyer_npub }}</p>
+        <p><strong>Seller:</strong> {{ order.seller_npub }}</p>
+        <p><strong>Amount:</strong> {{ escrow.amount }} sats</p>
+        <p><strong>Initiated by:</strong> {{ dispute.initiated_by }}</p>
+        <p><strong>Created:</strong> {{ dispute.created_at }}</p>
+        <p><strong>Auto-resolve:</strong> {{ dispute.auto_resolve_at }}</p>
+    </div>
+
+    <div class="dispute-reason">
+        <h2>Reason</h2>
+        <p>{{ dispute.reason }}</p>
+    </div>
+
+    <div class="dispute-evidence">
+        <h2>Evidence</h2>
+        {% if evidence.is_empty() %}
+        <p>No evidence submitted.</p>
+        {% else %}
+        {% for e in evidence %}
+        <div class="evidence-item">
+            <p><strong>From:</strong> {{ e.submitted_by }}</p>
+            <p><strong>Type:</strong> {{ e.evidence_type }}</p>
+            {% if e.evidence_type == "text" %}
+            <p>{{ e.content }}</p>
+            {% else %}
+            <p>[Image evidence]</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+    {% if dispute.status == "open" %}
+    <div class="resolution-form">
+        <h2>Resolve Dispute</h2>
+        <form method="post" action="/admin/disputes/{{ dispute.id }}/resolve">
+            <div class="form-group">
+                <label for="resolution">Resolution</label>
+                <select id="resolution" name="resolution" required>
+                    <option value="">Select resolution...</option>
+                    <option value="buyer_full">Full refund to buyer</option>
+                    <option value="seller_full">Full release to seller</option>
+                    <option value="split_50_50">Split 50/50</option>
+                    <option value="split_75_25">Split 75% buyer / 25% seller</option>
+                    <option value="split_25_75">Split 25% buyer / 75% seller</option>
+                    <option value="burn">Burn funds (extreme cases)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="notes">Resolution Notes</label>
+                <textarea id="notes" name="notes" rows="4" placeholder="Explain the reasoning..."></textarea>
+            </div>
+
+            <button type="submit" class="btn primary">Resolve Dispute</button>
+        </form>
+    </div>
+    {% else %}
+    <div class="resolution-info">
+        <h2>Resolution</h2>
+        {% match dispute.resolution %}
+        {% when Some with (res) %}
+        <p><strong>Outcome:</strong> {{ res }}</p>
+        {% when None %}
+        <p><strong>Outcome:</strong> N/A</p>
+        {% endmatch %}
+        {% match dispute.resolution_notes %}
+        {% when Some with (notes) %}
+        <p><strong>Notes:</strong> {{ notes }}</p>
+        {% when None %}
+        {% endmatch %}
+        {% match dispute.resolved_by %}
+        {% when Some with (by) %}
+        <p><strong>Resolved by:</strong> {{ by }}</p>
+        {% when None %}
+        <p><strong>Resolved by:</strong> N/A</p>
+        {% endmatch %}
+        {% match dispute.resolved_at %}
+        {% when Some with (at) %}
+        <p><strong>Resolved at:</strong> {{ at }}</p>
+        {% when None %}
+        <p><strong>Resolved at:</strong> N/A</p>
+        {% endmatch %}
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

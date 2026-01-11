@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="order-detail">
+    <h1>Order #{{ order.id[..8] }}...</h1>
+
+    <div class="order-status-badge {{ order.status }}">
+        Status: {{ order.status }}
+    </div>
+
+    <div class="order-info">
+        <p><strong>Seller:</strong> {{ order.seller_npub[..12] }}...</p>
+        <p><strong>Created:</strong> {{ order.created_at }}</p>
+        {% if let Some(shipped_at) = order.shipped_at %}
+        <p><strong>Shipped:</strong> {{ shipped_at }}</p>
+        {% endif %}
+        {% if let Some(tracking) = order.tracking_info.as_ref() %}
+        <p><strong>Tracking:</strong> {{ tracking }}</p>
+        {% endif %}
+    </div>
+
+    <h2>Items</h2>
+    <div class="order-items">
+        {% for item in items %}
+        <div class="order-item">
+            <span>{{ item.listing_id[..8] }}...</span>
+            <span>{{ item.price }} sats</span>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="escrow-info">
+        <h2>Escrow</h2>
+        <p><strong>Amount held:</strong> {{ escrow.amount }} sats</p>
+        <p><strong>Auto-release:</strong> {{ escrow.auto_release_at }}</p>
+    </div>
+
+    <div class="order-actions">
+        {% if can_confirm %}
+        <form method="post" action="/orders/{{ order.id }}/confirm">
+            <button type="submit" class="btn primary">Confirm Received</button>
+        </form>
+        <p><small>This releases escrow to seller.</small></p>
+        {% endif %}
+
+        {% if can_dispute %}
+        <details class="dispute-form">
+            <summary>Open Dispute</summary>
+            <form method="post" action="/orders/{{ order.id }}/dispute">
+                <div class="form-group">
+                    <label for="reason">Reason for dispute</label>
+                    <textarea id="reason" name="reason" required rows="4"></textarea>
+                </div>
+                <button type="submit" class="btn danger">Submit Dispute</button>
+            </form>
+        </details>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

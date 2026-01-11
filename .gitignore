@@ -1,0 +1,18 @@
+# Build artifacts
+/target/
+
+# Environment
+.env
+
+# Local data
+/data/
+
+# Local documentation (vibe coding notes)
+/docs/
+
+# IDE/Editor
+.claude/
+.idea/
+.vscode/
+*.swp
+*.swo

@@ -1,0 +1,54 @@
+[package]
+name = "marketplace"
+version = "0.1.0"
+edition = "2021"
+description = "Privacy-first Tor marketplace with Cashu payments and Nostr identity"
+
+[dependencies]
+# Web framework
+axum = { version = "0.7", features = ["macros"] }
+axum-extra = { version = "0.9", features = ["cookie", "typed-header"] }
+tower = "0.4"
+tower-http = { version = "0.5", features = ["trace", "cors", "limit", "fs"] }
+tokio = { version = "1", features = ["full"] }
+
+# Templating
+askama = { version = "0.12", features = ["with-axum"] }
+askama_axum = "0.4"
+
+# Database
+sqlx = { version = "0.8", features = ["runtime-tokio", "sqlite", "chrono"] }
+
+# Cashu
+cdk = "0.14"
+cdk-sqlite = "0.14"
+
+# Nostr
+nostr-sdk = "0.35"
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Crypto
+rand = "0.8"
+sha2 = "0.10"
+hex = "0.4"
+getrandom = "0.2"
+
+# Time
+chrono = { version = "0.4", features = ["serde"] }
+
+# Utilities
+uuid = { version = "1", features = ["v4", "serde"] }
+thiserror = "1"
+anyhow = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+dotenvy = "0.15"
+
+# Config
+config = "0.14"
+
+[dev-dependencies]
+tokio-test = "0.4"

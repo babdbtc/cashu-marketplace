@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="orders">
+    <h1>My Orders</h1>
+
+    {% if orders.is_empty() %}
+    <p>You haven't placed any orders yet.</p>
+    <a href="/listings" class="btn secondary">Browse Listings</a>
+    {% else %}
+    <div class="order-list">
+        {% for view in orders %}
+        <div class="order-card">
+            <div class="order-header">
+                <span class="order-id">Order #{{ view.order.id[..8] }}...</span>
+                <span class="order-status {{ view.order.status }}">{{ view.order.status }}</span>
+            </div>
+            <div class="order-info">
+                <p>Seller: {{ view.order.seller_npub[..12] }}...</p>
+                <p>Items: {{ view.items.len() }}</p>
+                <p>Amount: {{ view.escrow.amount }} sats</p>
+                <p>Created: {{ view.order.created_at }}</p>
+            </div>
+            <a href="/orders/{{ view.order.id }}" class="btn-small">View Details</a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

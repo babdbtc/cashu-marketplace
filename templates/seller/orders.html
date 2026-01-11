@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="seller-orders">
+    <h1>Seller Orders</h1>
+
+    {% if orders.is_empty() %}
+    <p>No orders yet.</p>
+    {% else %}
+    <div class="order-list">
+        {% for view in orders %}
+        <div class="order-card">
+            <div class="order-header">
+                <span class="order-id">Order #{{ view.order.id[..8] }}...</span>
+                <span class="order-status {{ view.order.status }}">{{ view.order.status }}</span>
+            </div>
+            <div class="order-info">
+                <p>Buyer: {{ view.buyer_npub_short }}</p>
+                <p>Items: {{ view.item_count }}</p>
+                <p>Amount: {{ view.total_amount }} sats</p>
+            </div>
+            {% if view.order.status == "pending" %}
+            <form method="post" action="/seller/orders/{{ view.order.id }}/ship">
+                <div class="form-group">
+                    <input type="text" name="tracking_info" placeholder="Tracking info (optional)">
+                </div>
+                <button type="submit" class="btn primary">Mark Shipped</button>
+            </form>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

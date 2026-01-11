@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="admin-disputes">
+    <h1>Open Disputes</h1>
+
+    {% if disputes.is_empty() %}
+    <p>No open disputes.</p>
+    {% else %}
+    <div class="dispute-list">
+        {% for view in disputes %}
+        <div class="dispute-card">
+            <div class="dispute-header">
+                <span class="dispute-id">Dispute #{{ view.dispute.id[..8] }}...</span>
+                <span class="time-remaining">
+                    {% if view.time_remaining > 86400 %}
+                    {{ view.time_remaining / 86400 }} days remaining
+                    {% else %}
+                    {{ view.time_remaining / 3600 }} hours remaining
+                    {% endif %}
+                </span>
+            </div>
+            <div class="dispute-info">
+                <p><strong>Order:</strong> {{ view.order.id[..8] }}...</p>
+                <p><strong>Amount:</strong> {{ view.escrow.amount }} sats</p>
+                <p><strong>Initiated by:</strong> {{ view.dispute.initiated_by }}</p>
+                <p><strong>Reason:</strong> {{ view.dispute.reason }}</p>
+            </div>
+            <a href="/admin/disputes/{{ view.dispute.id }}" class="btn secondary">Review</a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="auth-form">
+    <h1>Login</h1>
+
+    {% if let Some(err) = error %}
+    <div class="error">{{ err }}</div>
+    {% endif %}
+
+    <form method="post" action="/login">
+        <div class="form-group">
+            <label for="nsec">Your nsec (secret key)</label>
+            <input type="password" id="nsec" name="nsec" required
+                   placeholder="nsec1..." autocomplete="off">
+            <small>Your nsec never leaves your browser unencrypted.</small>
+        </div>
+
+        <button type="submit" class="btn primary">Login</button>
+    </form>
+
+    <p class="alt-action">
+        Don't have an account? <a href="/register">Register</a>
+    </p>
+</section>
+{% endblock %}

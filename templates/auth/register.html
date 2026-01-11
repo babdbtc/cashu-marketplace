@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="auth-form">
+    <h1>Register</h1>
+
+    {% if let Some(err) = error %}
+    <div class="error">{{ err }}</div>
+    {% endif %}
+
+    {% if let Some(nsec) = generated_nsec %}
+    <div class="key-display">
+        <h2>Your Keys Have Been Generated</h2>
+
+        <div class="warning">
+            <strong>IMPORTANT:</strong> Save your nsec (secret key) now!
+            It will NOT be shown again. If you lose it, you lose access to your account.
+        </div>
+
+        <div class="key-box">
+            <label>Your nsec (SECRET - never share)</label>
+            <code class="key">{{ nsec }}</code>
+        </div>
+
+        {% if let Some(npub) = generated_npub %}
+        <div class="key-box">
+            <label>Your npub (public - safe to share)</label>
+            <code class="key">{{ npub }}</code>
+        </div>
+        {% endif %}
+
+        <form method="post" action="/register">
+            <input type="hidden" name="nsec" value="{{ nsec }}">
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" required>
+                    I have saved my nsec securely
+                </label>
+            </div>
+            <button type="submit" class="btn primary">Complete Registration</button>
+        </form>
+    </div>
+    {% else %}
+    <div class="register-options">
+        <h2>Choose Registration Method</h2>
+
+        <div class="option">
+            <h3>Generate New Keys</h3>
+            <p>We'll generate a secure Nostr keypair for you.</p>
+            <form method="post" action="/register">
+                <input type="hidden" name="generate_new" value="1">
+                <button type="submit" class="btn primary">Generate Keys</button>
+            </form>
+        </div>
+
+        <div class="option">
+            <h3>Use Your Own Keys</h3>
+            <p>Already have a Nostr keypair? Enter your nsec below.</p>
+            <form method="post" action="/register">
+                <div class="form-group">
+                    <label for="nsec">Your nsec</label>
+                    <input type="password" id="nsec" name="nsec"
+                           placeholder="nsec1..." autocomplete="off">
+                </div>
+                <button type="submit" class="btn secondary">Register with Existing Key</button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+    <p class="alt-action">
+        Already have an account? <a href="/login">Login</a>
+    </p>
+</section>
+{% endblock %}

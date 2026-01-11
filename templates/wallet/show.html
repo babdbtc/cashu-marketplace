@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="wallet">
+    <h1>Wallet</h1>
+
+    <div class="balance-card">
+        <span class="label">Balance</span>
+        <span class="amount">{{ balance }} sats</span>
+    </div>
+
+    <div class="wallet-actions">
+        <a href="/wallet/deposit" class="btn primary">Deposit</a>
+        <a href="/wallet/withdraw" class="btn secondary">Withdraw</a>
+    </div>
+
+    <h2>Recent Transactions</h2>
+    <div class="transactions">
+        {% if transactions.is_empty() %}
+        <p>No transactions yet.</p>
+        {% else %}
+        {% for tx in transactions %}
+        <div class="transaction {% if tx.amount > 0 %}credit{% else %}debit{% endif %}">
+            <div class="tx-info">
+                <span class="tx-type">{{ tx.transaction_type }}</span>
+                <span class="tx-date">{{ tx.created_at }}</span>
+            </div>
+            <span class="tx-amount">{% if tx.amount > 0 %}+{% endif %}{{ tx.amount }} sats</span>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="withdraw">
+    <h1>Withdraw</h1>
+
+    <div class="balance-info">
+        <p>Available balance: <strong>{{ balance }} sats</strong></p>
+    </div>
+
+    {% if let Some(err) = error %}
+    <div class="error">{{ err }}</div>
+    {% endif %}
+
+    <form method="post" action="/wallet/withdraw">
+        <div class="form-group">
+            <label for="amount">Amount (sats)</label>
+            <input type="number" id="amount" name="amount" min="1000" max="{{ balance }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="invoice">Lightning Invoice</label>
+            <textarea id="invoice" name="invoice" placeholder="lnbc..." required></textarea>
+            <small>Enter a Lightning invoice for the amount you want to withdraw.</small>
+        </div>
+
+        <button type="submit" class="btn primary">Withdraw</button>
+    </form>
+</section>
+{% endblock %}

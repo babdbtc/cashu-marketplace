@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>Privacy-First Marketplace</h1>
+    <p>Buy and sell with complete privacy using Cashu ecash and Nostr identity.</p>
+    <div class="cta">
+        <a href="/listings" class="btn primary">Browse Listings</a>
+        <a href="/register" class="btn secondary">Get Started</a>
+    </div>
+</section>
+
+<section class="features">
+    <h2>Features</h2>
+    <div class="feature-grid">
+        <div class="feature">
+            <h3>No JavaScript Required</h3>
+            <p>Works in Tor Browser "Safest" mode for maximum privacy.</p>
+        </div>
+        <div class="feature">
+            <h3>Cashu Payments</h3>
+            <p>Untraceable ecash payments with built-in escrow protection.</p>
+        </div>
+        <div class="feature">
+            <h3>Nostr Identity</h3>
+            <p>One secret key (nsec) for login and encrypted messaging.</p>
+        </div>
+        <div class="feature">
+            <h3>Blind Escrow</h3>
+            <p>10-day protection with dispute resolution.</p>
+        </div>
+    </div>
+</section>
+
+<!-- TODO: Featured listings section -->
+<!-- TODO: Recent listings section -->
+{% endblock %}

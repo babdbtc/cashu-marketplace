@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="deposit">
+    <h1>Deposit</h1>
+
+    {% if let Some(inv) = invoice %}
+    <div class="invoice-display">
+        <h2>Pay this Lightning Invoice</h2>
+        <p>Amount: {{ amount.unwrap_or(0) }} sats</p>
+        <code class="invoice">{{ inv }}</code>
+        <p><small>Invoice expires in 1 hour</small></p>
+    </div>
+    {% endif %}
+
+    <h2>Deposit via Lightning</h2>
+    <form method="post" action="/wallet/deposit">
+        <div class="form-group">
+            <label for="amount">Amount (sats)</label>
+            <input type="number" id="amount" name="amount" min="1000" required>
+        </div>
+        <button type="submit" class="btn secondary">Generate Invoice</button>
+    </form>
+
+    <h2>Or Deposit Cashu Token</h2>
+    <form method="post" action="/wallet/deposit">
+        <div class="form-group">
+            <label for="cashu_token">Cashu Token</label>
+            <textarea id="cashu_token" name="cashu_token" placeholder="cashuA..."></textarea>
+        </div>
+        <button type="submit" class="btn primary">Deposit Token</button>
+    </form>
+</section>
+{% endblock %}
