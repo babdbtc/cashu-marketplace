@@ -20,6 +20,55 @@ A fully private marketplace where:
 - **Multi-Item Cart** - Buy from multiple sellers in one checkout
 - **Encrypted Messaging** - NIP-04/NIP-44 encrypted buyer-seller communication
 
+## Why Cashu?
+
+[Cashu](https://cashu.space/) is an ecash protocol that provides significant privacy advantages for a marketplace:
+
+- **Blind Signatures** - The mint signs tokens without seeing their content, so it cannot link who received tokens to who spent them
+- **Unlinkable Transactions** - Payments cannot be traced between sender and receiver, even by the mint operator
+- **No Account Required** - Users can pay with tokens from any compatible wallet without registration
+- **Instant Settlement** - No on-chain confirmation delays; tokens transfer immediately
+- **Lightning Integration** - Deposit via Lightning invoice, withdraw to any Lightning address
+- **Offline Verification** - P2PK-locked tokens can be verified locally without contacting the mint
+
+This makes Cashu ideal for privacy-focused commerce where neither the platform nor outside observers should be able to track user purchasing behavior.
+
+## DDoS Protection via Token-Gated Access
+
+Traditional DDoS protection relies on CAPTCHAs or IP-based rate limiting, both of which compromise privacy. This marketplace uses **token-gated access** based on the L402 protocol - every request costs a small amount (1 sat), making attacks economically unfeasible.
+
+### How It Works
+
+1. **Unauthenticated Request** - User visits the site without a valid session
+2. **402 Payment Required** - Server responds with payment details:
+   ```
+   HTTP/1.1 402 Payment Required
+   X-Cashu-Price: 1
+   X-Cashu-Mint: http://marketplace.onion/mint
+   X-Cashu-Pubkey: <marketplace-pubkey>
+   ```
+3. **User Pays** - Submits a Cashu token via form or `X-Cashu` header
+4. **Session Created** - Server validates the token and creates a session with browsing balance
+5. **Browsing** - Each page view deducts 1 sat; when depleted, user tops up again
+
+### P2PK Token Locking
+
+Tokens are locked to the marketplace's public key using Cashu's P2PK (Pay-to-Public-Key) feature. This enables:
+
+- **Local Verification** - Tokens can be validated without contacting the mint for every request
+- **Faster Processing** - No network round-trip needed for token verification
+- **Replay Prevention** - Spent token hashes are stored to prevent double-spending
+
+### Economics
+
+| Metric | Value |
+|--------|-------|
+| Cost per page | 1 sat |
+| Typical session | 10-50 pages = 10-50 sats (~$0.01-0.05) |
+| DDoS cost for 1M requests | 1M sats (~$300) |
+
+This creates a negligible cost for legitimate users while making large-scale attacks economically impractical.
+
 ## User Types
 
 | Type | Identity | Wallet | Disputes |
