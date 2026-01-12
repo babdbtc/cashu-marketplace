@@ -1,6 +1,6 @@
 # Marketplace
 
-A privacy-first Tor marketplace with Cashu ecash payments and Nostr identity.
+A marketplace with Cashu ecash payments and Nostr identity.
 
 ## Overview
 
